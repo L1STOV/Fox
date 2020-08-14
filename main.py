@@ -1,4 +1,5 @@
 import speech_recognition as sr
+import datetime
 
 r = sr.Recognizer()
 
@@ -17,8 +18,13 @@ def record_audio():
 
 
 def respond(voice_data):
+    now = datetime.datetime.now()
     if 'what is your name' in voice_data:
         print("My name is Fox")
+    if 'what time is now' in voice_data:
+        print("Now " + str(now.hour) + ":" + str(now.minute))
+    if 'what date is today':
+        print("Today is " + str(now.day) + " of " + str(now.month))
 
 
 print("How can i help you?")
