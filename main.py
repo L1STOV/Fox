@@ -1,11 +1,14 @@
 import speech_recognition as sr
 import datetime
+import webbrowser
 
 r = sr.Recognizer()
 
 
-def record_audio():
+def record_audio(ask = False):
     with sr.Microphone() as source:
+        if ask:
+            print(ask)
         audio = r.listen(source)
         voice_data = ''
         try:
@@ -23,8 +26,18 @@ def respond(voice_data):
         print("My name is Fox")
     if 'what time is now' in voice_data:
         print("Now " + str(now.hour) + ":" + str(now.minute))
-    if 'what date is today':
+    if 'what date is today' in voice_data:
         print("Today is " + str(now.day) + " of " + str(now.month))
+    if 'search' in voice_data:
+        search = record_audio("What do you want to search")
+        url = "https://google.com/search?q=" + search
+        webbrowser.get().open(url)
+        print("Here is what i found for " + search)
+    if 'find location' in voice_data:
+        location = record_audio("What's the location'")
+        url = "https://google.nl/maps/place/" + location + '/&amp;'
+        webbrowser.get().open(url)
+        print("Here is the location " + location)
 
 
 print("How can i help you?")
