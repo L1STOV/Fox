@@ -6,6 +6,8 @@ from gtts import gTTS
 import playsound
 import os
 import random
+import pyowm
+from person import Person
 
 r = sr.Recognizer()
 
@@ -51,10 +53,10 @@ def respond(voice_data):
     if words_exists(['what time is now', 'current time', 'what time', 'whats the time now']):
         fox_speak("Now " + str(now.hour) + " hours " + str(now.minute) + " minutes")
 
-    if 'what date is today' in voice_data:
+    if words_exists(['what date is today', 'current date']):
         fox_speak("Today is " + str(now.day) + " of " + str(now.strftime("%B")))
 
-    if words_exists(['search', 'find', 'search in google', 'find in google']):
+    if words_exists(['search', 'search in google']):
         search = record_audio("What do you want to search")
         url = "https://google.com/search?q=" + search
         webbrowser.get().open(url)
@@ -74,7 +76,18 @@ def respond(voice_data):
                    ]
         answer = answers[random.randint(0, len(answers)-1)]
         fox_speak(answer)
-        
+
+    if words_exists(["what's the weather", "weather now is"]):
+        city = 'Mykolaiv, Ukraine'  # need to create func that will detect location
+        owm_api_key = open("owm_api.txt", 'r')
+        owm = pyowm.OWM(owm_api_key.readline())
+        mgr = owm.weather_manager()
+        observation = mgr.weather_at_place(city)
+        w = observation.weather
+        temp = w.temperature('celsius')['temp']
+        fox_speak('In ' + city + ' now is ' + str(round(temp, 1)) + ' celsius')
+        owm_api_key.close()
+
     if 'exit' in voice_data:
         fox_speak("See you soon, master")
         exit()
