@@ -7,9 +7,16 @@ import playsound
 import os
 import random
 import pyowm
-from person import Person
 
 r = sr.Recognizer()
+now = datetime.datetime.now()
+city = 'Mykolaiv, Ukraine'  # need to create func that will detect location
+owm_api_key = open("owm_api.txt", 'r')
+owm = pyowm.OWM(owm_api_key.readline())
+mgr = owm.weather_manager()
+observation = mgr.weather_at_place(city)
+w = observation.weather
+temp = w.temperature('celsius')['temp']
 
 
 def words_exists(options):
@@ -46,7 +53,7 @@ def fox_speak(audio_string):
 
 
 def respond(voice_data):
-    now = datetime.datetime.now()
+
     if words_exists(['what is your name', 'please remember your name', 'your name is', 'remember your name']):
         fox_speak("My name is Fox")
 
@@ -78,23 +85,23 @@ def respond(voice_data):
         fox_speak(answer)
 
     if words_exists(["what's the weather", "weather now is"]):
-        city = 'Mykolaiv, Ukraine'  # need to create func that will detect location
-        owm_api_key = open("owm_api.txt", 'r')
-        owm = pyowm.OWM(owm_api_key.readline())
-        mgr = owm.weather_manager()
-        observation = mgr.weather_at_place(city)
-        w = observation.weather
-        temp = w.temperature('celsius')['temp']
-        fox_speak('In ' + city + ' now is ' + str(round(temp, 1)) + ' celsius')
+        fox_speak('In ' + city + ' now is ' + str(round(temp, 1)) + ' degrees celsius')
         owm_api_key.close()
 
-    if 'exit' in voice_data:
+    if words_exists(["f***", "b****", "w****"]):
+        fox_speak("I do not react to this")
+
+    if words_exists(['exit', 'finish', 'end of the work']):
         fox_speak("See you soon, master")
         exit()
 
 
+def launch_fox():  # this func is for introduction with user
+    fox_speak("Hello sir. What we gonna do?")
+
+
 time.sleep(1)
-fox_speak("How can i help you?")
+launch_fox()
 while True:
     voice_data = record_audio()
     respond(voice_data)
