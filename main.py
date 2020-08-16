@@ -84,6 +84,15 @@ def respond(voice_data):
         answer = answers[random.randint(0, len(answers)-1)]
         fox_speak(answer)
 
+    if words_exists(['hi fox', 'hello fox']):
+        answers = ["I am here master",
+                   "I am still here and ready to work",
+                   "I already thought you wouldn't call me anymore",
+                   "Have an idea?. I'am in"
+                   ]
+        answer = answers[random.randint(0, len(answers)-1)]
+        fox_speak(answer)
+
     if words_exists(["what's the weather", "weather now is"]):
         fox_speak('In ' + city + ' now is ' + str(round(temp, 1)) + ' degrees celsius')
         owm_api_key.close()
