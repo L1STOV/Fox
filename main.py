@@ -69,6 +69,18 @@ def respond(voice_data):
         webbrowser.get().open(url)
         fox_speak("Here is what i found for " + search)
 
+    if words_exists(['play music', 'turn music']):
+        fox_speak('I know some cool mixes on youtube')
+        urls = [
+                'https://www.youtube.com/watch?v=5qap5aO4i9A',
+                'https://www.youtube.com/watch?v=DWcJFNfaw9c',
+                'https://www.youtube.com/watch?v=5yx6BWlEVcY',
+                'https://www.youtube.com/watch?v=7NOSDKb0HlU'
+                ]
+        music_choice = urls[random.randint(0, len(urls) - 1)]
+        webbrowser.get().open(music_choice)
+        fox_speak('Hope you will enjoy')
+
     if words_exists(['find location', 'find the location', 'i need location']):
         location = record_audio("What's the location")
         url = "https://google.nl/maps/place/" + location + '/&amp;'
@@ -100,7 +112,7 @@ def respond(voice_data):
     if words_exists(["f***", "b****", "w****"]):
         fox_speak("I do not react to this")
 
-    if words_exists(['exit', 'finish', 'end of the work']):
+    if words_exists(['exit', 'finish', 'end of the work', 'goodbye']):
         fox_speak("See you soon, master")
         exit()
 
